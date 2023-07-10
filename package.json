@@ -1,0 +1,21 @@
+{
+  "name": "koishi-plugin-mc-server-status",
+  "description": "A plugin helps you check a minecraft server's status",
+  "version": "0.0.1",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "files": [
+    "lib",
+    "dist"
+  ],
+  "license": "MIT",
+  "scripts": {},
+  "keywords": [
+    "chatbot",
+    "koishi",
+    "plugin"
+  ],
+  "peerDependencies": {
+    "koishi": "^4.13.6"
+  }
+}
