@@ -1,7 +1,7 @@
 {
   "name": "koishi-plugin-mc-server-status",
   "description": "A plugin helps you check a minecraft server's status",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "files": [
@@ -15,6 +15,11 @@
     "koishi",
     "plugin"
   ],
+  "author": "Itz_Dr_Li",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/itzdrli/koishi-plugin-mc-server-status.git"
+  },
   "peerDependencies": {
     "koishi": "^4.13.6"
   }
