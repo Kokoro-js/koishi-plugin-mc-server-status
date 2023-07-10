@@ -11,9 +11,10 @@
   "license": "MIT",
   "scripts": {},
   "keywords": [
-    "chatbot",
+    "minecraft",
     "koishi",
-    "plugin"
+    "plugin",
+    "mc"
   ],
   "author": "Itz_Dr_Li",
   "repository": {
