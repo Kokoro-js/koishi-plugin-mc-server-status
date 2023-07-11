@@ -47,7 +47,7 @@ export function apply(ctx: Context, config: Config) {
           await session.send(h.image(data.icon))
         }
         if (config.version) {
-          await session.send(session.text('version', [data.version]))
+          await session.send(session.text('version', [data.version.name_clean]))
         }
         if (config.motd) {
           await session.send(session.text('motd', [data.motd.clean]))
