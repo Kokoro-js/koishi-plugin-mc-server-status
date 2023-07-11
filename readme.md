@@ -11,6 +11,7 @@ A plugin helps you check a minecraft server's status or specific one's.
   - [✅] Add option for show the icon  
   - [✅] Add option for show the version  
   - [✅] Add option for show the motd
+  - [🔨] Add support for multilingual
 
 # Known issues
 
