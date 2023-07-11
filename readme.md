@@ -8,6 +8,10 @@ A plugin helps you check a minecraft server's status or specific one's.
 
 🔨: Doing ✅: Finished ❌: Not yet
 
-  - [🔨] Add option for show the icon  
-  - [🔨] Add option for show the version  
-  - [🔨] Add option for show the motd
+  - [✅] Add option for show the icon  
+  - [✅] Add option for show the version  
+  - [✅] Add option for show the motd
+
+# Known issues
+
+  - [❌] The icon is not working on some platforms
