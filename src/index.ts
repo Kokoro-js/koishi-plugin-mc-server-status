@@ -10,10 +10,23 @@ export interface Config {
 }
 
 export const Config: Schema<Config> = Schema.object({
-  IP: Schema.string().description('If no IP is specified, this is the default IP will be used.'),
-  icon: Schema.boolean().default(true).description('Whether to show the server icon.'),
-  version: Schema.boolean().default(true).description('Whether to show the server version.'),
-  motd: Schema.boolean().default(true).description('Whether to show the server motd.')
+  IP: Schema.string(),
+  icon: Schema.boolean().default(true),
+  version: Schema.boolean().default(true),
+  motd: Schema.boolean().default(true)
+}).i18n({
+  'zh-CN': { 
+    IP: '如果查询时未添加服务器地址, 将使用此地址', 
+    icon: '是否显示服务器图标', 
+    version: '是否显示服务器版本', 
+    motd: '是否显示服务器MOTD' 
+  },
+  'en-US': { 
+    IP: 'If the server address is not filled in, this address will be used', 
+    icon: 'Whether to display the server icon', 
+    version: 'Whether to display the server version', 
+    motd: 'Whether to display the server MOTD' 
+  }
 })
 
 export function apply(ctx: Context, config: Config) {
@@ -26,11 +39,7 @@ export function apply(ctx: Context, config: Config) {
       if (!server) {
         server = config.IP
       }
-      const res = await fetch(`https://api.mcstatus.io/v2/status/java/${server}`)
-      const data = await res.json()
-      if (config.icon) {
-        data.icon = Buffer.from(data.icon.replace(/^data:image\/png;base64,/, ''), 'base64')
-      }
+      const data = await (await fetch(`https://api.mcstatus.io/v2/status/java/${server}`)).json()
       ctx.i18n.define('zh-CN', { online: '服务器 {0} 状态: 在线' })
       ctx.i18n.define('en-US', { online: 'Server {0} Status: Online' })
       ctx.i18n.define('zh-CN', { offline: '服务器 {0} 状态: 离线' })
@@ -44,7 +53,8 @@ export function apply(ctx: Context, config: Config) {
       if (data.online) {
         await session.send(session.text('online', [server]))
         if (config.icon) {
-          await session.send(h.image(data.icon))
+          data.icon = Buffer.from(data.icon.replace(/^data:image\/png;base64,/, ''), 'base64')
+          await session.send(h.image(data.icon, 'image/png'));
         }
         if (config.version) {
           await session.send(session.text('version', [data.version.name_clean]))

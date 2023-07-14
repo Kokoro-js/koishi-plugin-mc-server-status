@@ -11,8 +11,8 @@ A plugin helps you check a minecraft server's status or specific one's. (Minecra
   - [✅] Add option for show the icon  
   - [✅] Add option for show the version  
   - [✅] Add option for show the motd
-  - [🔨] Add support for multilingual (en-US & zh-CN & maybe pt-PT/pt-BR)
-  - [❌] Add support for Minecraft: Bedrock Edition & and option for switch between Java Edition and Bedrock Edition
+  - [✅] Add support for multilingual (en-US & zh-CN)
+  - [🔨] Optimize the code
 
 # Known issues
 
