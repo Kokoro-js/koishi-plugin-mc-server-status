@@ -1,0 +1,10 @@
+online: 'Server {0} Status: Online'
+version: 'Version: {0}'
+motd: 'MOTD: {0}'
+players: 'Players: {0}/{1}'
+offline: 'Server {0} Status: Offline'
+commands: 
+  mcs:
+    description: 'Query Minecraft server status'
+    examples: |
+      mcs example.com
