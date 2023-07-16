@@ -59,6 +59,6 @@ export function apply(ctx: Context, config: Config) {
         result = ''
         result += session.text('offline', [server]) + '\n';
       }
-      return session.text(result);
+      return result;
     })
 }

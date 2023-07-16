@@ -12,9 +12,8 @@ A plugin helps you check a minecraft server's status or specific one's. (Minecra
   - [✅] Add option for show the version  
   - [✅] Add option for show the motd
   - [✅] Add support for multilingual (en-US & zh-CN)
-  - [🔨] Optimize the code
+  - [✅] Optimize the code
 
 # Known issues
 
-  - [❌] The icon is not working on some platforms
-    (Known: Telegram)
+  - Nothing yet
