@@ -1,4 +1,5 @@
 import { Context, Schema, h } from 'koishi'
+import { } from 'koishi-plugin-puppeteer'
 
 export const name = 'mc-server-status'
 
@@ -43,22 +44,43 @@ export function apply(ctx: Context, config: Config) {
       const data = await (await fetch(`https://api.mcstatus.io/v2/status/java/${server}`)).json()
       if (data.online) {
         result = ''
-        result += session.text('online', [server]) + '\n';
+        result += '<p>' + session.text('online', [server]) + '</p>';
         if (config.icon) {
-          data.icon = Buffer.from(data.icon.replace(/^data:image\/png;base64,/, ''), 'base64')
-          await session.send(h.image(data.icon, 'image/png'));
+          // data.icon = Buffer.from(data.icon.replace(/^data:image\/png;base64,/, ''), 'base64')
+          // await session.send(h.image(data.icon, 'image/png'));
         }
         if (config.version) {
-          result += session.text('version', [data.version.name_clean]) + '\n';
+          result += '<p>' + session.text('version', [data.version.name_clean]) + '</p>';
         }
         if (config.motd) {
-          result += session.text('motd', [data.motd.clean]) + '\n';
+          data.motd.clean = data.motd.clean.replace(/\n/g, '&#10;');
+          result += '<p>' + session.text('motd', [data.motd.clean]) + '</p>';
         }
-        result += session.text('players', [data.players.online, data.players.max]) + '\n';
+        result += '<p>' + session.text('players', [data.players.online, data.players.max]) + '</p>';
       } else {
         result = ''
-        result += session.text('offline', [server]) + '\n';
+        result += '<p>' + session.text('offline', [server]) + '</p>';
       }
-      return result;
+      // return result
+      const html = `
+      <!DOCTYPE html>
+      <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <script src="https://cdn.tailwindcss.com"></script>
+        </head>
+        <body class="bg-gray-900">
+          <div class="w-2xl h-auto mx-auto p-4 bg-gray-800">
+            <img src=${data.icon} alt="Icon" class="w-auto h-auto mx-auto mb-4" />
+            <div class="text-white text-center">
+              <p class="text-1x">${result}</p>
+            </div>
+          </div>
+        </body>
+      </html>
+      `;
+      const image = await ctx.puppeteer.render(html)
+      return image
+      // return `<html> ${html} </html>`
     })
 }
