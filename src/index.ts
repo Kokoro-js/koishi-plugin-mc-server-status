@@ -41,7 +41,7 @@ export function apply(ctx: Context, config: Config) {
       if (!server) {
         server = config.IP
       }
-      const data = await (await fetch(`https://api.mcstatus.io/v2/status/java/${server}`)).json()
+      const data = await (await fetch(`https://api.mcsrvstat.us/2/${server}`)).json()
       if (data.online) {
         result = ''
         result += '<p>' + session.text('online', [server]) + '</p>';
@@ -50,34 +50,44 @@ export function apply(ctx: Context, config: Config) {
           // await session.send(h.image(data.icon, 'image/png'));
         }
         if (config.version) {
-          result += '<p>' + session.text('version', [data.version.name_clean]) + '</p>';
+          result += '<p>' + session.text('version', [data.version]) + '</p>';
         }
         if (config.motd) {
-          data.motd.clean = data.motd.clean.replace(/\n/g, '&#10;');
-          result += '<p>' + session.text('motd', [data.motd.clean]) + '</p>';
+          // Use h() to create an HTML node from data.motd.html
+          const motdl1 = h(data.motd.html[0]);
+          const motdl2 = h(data.motd.html[1]);
+          result += session.text('motd', [motdl1, motdl2]);
         }
         result += '<p>' + session.text('players', [data.players.online, data.players.max]) + '</p>';
       } else {
         result = ''
         result += '<p>' + session.text('offline', [server]) + '</p>';
       }
-      // return result
       const html = `
       <!DOCTYPE html>
       <html lang="en">
-        <head>
-          <meta charset="UTF-8">
-          <script src="https://cdn.tailwindcss.com"></script>
-        </head>
-        <body class="bg-gray-900">
-          <div class="w-2xl h-auto mx-auto p-4 bg-gray-800">
-            <img src=${data.icon} alt="Icon" class="w-auto h-auto mx-auto mb-4" />
-            <div class="text-white text-center">
-              <p class="text-1x">${result}</p>
+      
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://cdn.tailwindcss.com"></script>
+      </head>
+      
+      <body class="bg-gray-900 text-white">
+        <div class="container mx-auto px-4 max-w-650 w-auto">
+          <div class="bg-gray-800 rounded-lg shadow-lg p-8">
+            <div class="text-center">
+              <img src="${data.icon}" alt="icon" class="w-35 h-35 mx-auto" />
+            </div>
+            <div class="text-center mt-4">
+              <div class="text-lg font-bold text-white">${result}</div>
             </div>
           </div>
-        </body>
+        </div>
+      </body>
+      
       </html>
+      
       `;
       const image = await ctx.puppeteer.render(html)
       return image
