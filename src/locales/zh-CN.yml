@@ -1,6 +1,6 @@
 online: '服务器 {0} 状态: 在线'
 version: '版本: {0}'
-motd: 'MOTD: <p></p> {0} <p></p> {1}'
+motd: '{0} <p></p> {1}'
 players: '玩家: {0}/{1}'
 offline: '服务器 {0} 状态: 离线'
 commands: 

@@ -1,6 +1,6 @@
 online: 'Server {0} Status: Online'
 version: 'Version: {0}'
-motd: 'MOTD: <p></p> {0} <p></p> {1}'
+motd: '{0} <p></p> {1}'
 players: 'Players: {0}/{1}'
 offline: 'Server {0} Status: Offline'
 commands: 
