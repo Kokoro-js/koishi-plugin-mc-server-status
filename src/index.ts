@@ -1,6 +1,5 @@
 import { Context, Logger, Schema, h } from 'koishi'
 import { } from 'koishi-plugin-puppeteer'
-import fs from 'fs'
 
 export const name = 'mc-server-status'
 
