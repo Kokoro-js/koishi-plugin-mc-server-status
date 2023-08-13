@@ -50,7 +50,6 @@ export function apply(ctx: Context, config: Config) {
         result += '<p>' + session.text('version', [data.version]) + '</p>';
       }
       if (config.motd) {
-        // Use h() to create an HTML node from data.motd.html
         const motdl1 = h('p', data.motd.html[0]);
         const motdl2 = h('p', data.motd.html[1]);
         result += h.unescape(session.text('motd', [motdl1, motdl2]));
