@@ -4,6 +4,8 @@
 
 A plugin helps you check a minecraft server's status or specific one's. (Minecraft: Java Edition only)
 
+**Requires NodeJS 18 or higher**
+
 # TODO  
 
 🔨: Doing ✅: Finished ❌: Not yet
