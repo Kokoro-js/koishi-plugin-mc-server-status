@@ -6,6 +6,8 @@ A plugin helps you check a minecraft server's status or specific one's. (Minecra
 
 **Requires NodeJS 18 or higher**
 
+**如遇使用问题可以前往QQ群: 957500313 讨论**
+
 # TODO  
 
 🔨: Doing ✅: Finished ❌: Not yet
