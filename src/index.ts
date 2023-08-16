@@ -41,7 +41,7 @@ export function apply(ctx: Context, config: Config) {
       if (!server) {
         server = config.IP
       }
-      const data = await (await fetch(`https://api.mcsrvstat.us/2/${server}`)).json()
+      let data = await ctx.http.get(`https://api.mcsrvstat.us/2/${server}`, { responseType: 'json' })
       if (!data.online) {
         return session.text('offline', [server])
       }

@@ -4,8 +4,6 @@
 
 A plugin helps you check a minecraft server's status or specific one's. (Minecraft: Java Edition only)
 
-**Requires NodeJS 18 or higher**
-
 **如遇使用问题可以前往QQ群: 957500313 讨论**
 
 # TODO  
@@ -17,7 +15,6 @@ A plugin helps you check a minecraft server's status or specific one's. (Minecra
   - [✅] Add option for show the motd
   - [✅] Add support for multilingual (en-US & zh-CN)
   - [🔨] Optimize the code
-  - [✅] Show results in one picture
 
 # Known issues
 
