@@ -1,6 +1,6 @@
 import { Context, Schema, h } from 'koishi'
 import { PingContext } from 'node-minecraft-status';
-import m2h from './m2h'
+import motdParser from '@sfirew/mc-motd-parser'
 
 import { } from 'koishi-plugin-puppeteer'
 
@@ -49,8 +49,7 @@ export function apply(ctx: Context, config: Config) {
       })
       result = `<p>${data.host}:${data.port}</p><p>版本: ${data.version.name}</p>`
       if (config.motd) {
-        const motdh = h('p', m2h(data.description))
-        result += `<p>${motdh}</p>`
+        result += `<p>${motdParser.textToHTML(data.description)}</p>`
       }
       result += `<p>在线人数: ${data.players.online}/${data.players.max}</p>`
       const html = `
