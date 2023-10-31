@@ -1,4 +1,7 @@
-import { Context, Logger, Schema, h } from 'koishi'
+import { Context, Schema, h } from 'koishi'
+import { PingContext } from 'node-minecraft-status';
+import m2h from './m2h'
+
 import { } from 'koishi-plugin-puppeteer'
 
 export const name = 'mc-server-status'
@@ -6,34 +9,19 @@ export const name = 'mc-server-status'
 export interface Config {
   IP: string
   icon: boolean
-  version: boolean
   motd: boolean
 }
 
 export const Config: Schema<Config> = Schema.object({
-  IP: Schema.string(),
-  icon: Schema.boolean().default(true),
-  version: Schema.boolean().default(true),
-  motd: Schema.boolean().default(true)
-}).i18n({
-  'zh-CN': {
-    IP: '如果查询时未添加服务器地址, 将使用此地址',
-    icon: '是否显示服务器图标',
-    version: '是否显示服务器版本',
-    motd: '是否显示服务器MOTD'
-  },
-  'en-US': {
-    IP: 'If the server address is not filled in, this address will be used',
-    icon: 'Whether to display the server icon',
-    version: 'Whether to display the server version',
-    motd: 'Whether to display the server MOTD'
-  }
+  IP: Schema.string().required(true).description('默认服务器IP'),
+  icon: Schema.boolean().default(true).description('是否显示服务器图标'),
+  motd: Schema.boolean().default(true).description('是否显示服务器MOTD')
 })
 
 export function apply(ctx: Context, config: Config) {
-  let result = ''
-  ctx.i18n.define('zh-CN', require('./locales/zh-CN'))
-  ctx.i18n.define('en-US', require('./locales/en-US'))
+  let result = null
+  let data = null
+  const client = new PingContext();
   // register command /mcs then send message
   ctx.command('mcs [server]', { authority: 0 })
     .action(async ({ session }, server) => {
@@ -41,20 +29,30 @@ export function apply(ctx: Context, config: Config) {
       if (!server) {
         server = config.IP
       }
-      let data = await ctx.http.get(`https://api.mcsrvstat.us/2/${server}`, { responseType: 'json' })
-      if (!data.online) {
-        return session.text('offline', [server])
-      }
-      result = '<p>' + session.text('online', [server]) + '</p>';
-      if (config.version) {
-        result += '<p>' + session.text('version', [data.version]) + '</p>';
-      }
+      // 使用 Promise 来确保 next 回调函数执行完毕后再访问 data
+      await new Promise<void>((resolve, reject) => {
+        client.ping(server)
+          .subscribe({
+            next(response) {
+              ctx.logger('mc-server-status').info(response)
+              data = response // 在回调函数中更新 data 变量
+              resolve() // 在 next 回调函数中调用 resolve 函数
+            },
+            error(err) {
+              ctx.logger('mc-server-status').error(`出现错误(服务器不在线?): ${err}`)
+              return session.text(`出现错误(服务器不在线?), 请检查日志`)
+            },
+            complete() {
+              ctx.logger('mc-server-status').info(`成功查询 ${server} 的信息`)
+            }
+          })
+      })
+      result = `<p>${data.host}:${data.port}</p><p>版本: ${data.version.name}</p>`
       if (config.motd) {
-        const motdl1 = h('p', data.motd.html[0]);
-        const motdl2 = h('p', data.motd.html[1]);
-        result += h.unescape(session.text('motd', [motdl1, motdl2]));
+        const motdh = h('p', m2h(data.description))
+        result += `<p>${motdh}</p>`
       }
-      result += '<p>' + session.text('players', [data.players.online, data.players.max]) + '</p>';
+      result += `<p>在线人数: ${data.players.online}/${data.players.max}</p>`
       const html = `
       <!DOCTYPE html>
       <html lang="en">
@@ -69,7 +67,7 @@ export function apply(ctx: Context, config: Config) {
           <div class="container mx-auto px-4 max-w-650 w-auto">
               <div class="bg-gray-800 rounded-lg shadow-lg p-8">
                   <div class="text-center">
-                      ${config.icon ? `<img src="${data.icon}" alt="icon" class="w-35 h-35 mx-auto" />` : ''}
+                      ${config.icon ? `<img src="${data.favicon}" alt="icon" class="w-35 h-35 mx-auto" />` : ''}
                   </div>
                   <div class="text-center mt-4">
                       <div class="text-lg font-bold text-white">${result}</div>
