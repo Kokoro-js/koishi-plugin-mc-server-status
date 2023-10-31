@@ -34,7 +34,6 @@ export function apply(ctx: Context, config: Config) {
         client.ping(server)
           .subscribe({
             next(response) {
-              ctx.logger('mc-server-status').info(response)
               data = response // 在回调函数中更新 data 变量
               resolve() // 在 next 回调函数中调用 resolve 函数
             },
