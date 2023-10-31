@@ -1,6 +1,6 @@
 import { Context, Schema, h } from 'koishi'
-import { PingContext } from 'node-minecraft-status';
-import motdParser from '@sfirew/mc-motd-parser'
+import { PingContext } from 'node-minecraft-status'
+import motdParser from '@sfirew/minecraft-motd-parser'
 
 import { } from 'koishi-plugin-puppeteer'
 

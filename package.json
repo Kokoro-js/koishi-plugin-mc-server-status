@@ -24,7 +24,7 @@
   "peerDependencies": {
     "koishi": "^4.13.6",
     "koishi-plugin-puppeteer": "^3.5.0",
-    "@sfirew/mc-motd-parser": "^1.1.1-1",
+    "@sfirew/minecraft-motd-parser": "^1.1.2-1",
     "node-minecraft-status": "^1.2.0"
   },
   "dependencies": {
