@@ -1,7 +1,6 @@
 import { Context, Schema, h } from 'koishi'
-import { PingContext } from 'node-minecraft-status'
+import pinger from 'minecraft-pinger'
 import motdParser from '@sfirew/minecraft-motd-parser'
-
 import { } from 'koishi-plugin-puppeteer'
 
 export const name = 'mc-server-status'
@@ -21,7 +20,6 @@ export const Config: Schema<Config> = Schema.object({
 export function apply(ctx: Context, config: Config) {
   let result = null
   let data = null
-  const client = new PingContext();
   // register command /mcs then send message
   ctx.command('mcs [server]', { authority: 0 })
     .action(async ({ session }, server) => {
@@ -29,25 +27,26 @@ export function apply(ctx: Context, config: Config) {
       if (!server) {
         server = config.IP
       }
-      // 使用 Promise 来确保 next 回调函数执行完毕后再访问 data
-      await new Promise<void>((resolve, reject) => {
-        client.ping(server)
-          .subscribe({
-            next(response) {
-              data = response // 在回调函数中更新 data 变量
-              resolve() // 在 next 回调函数中调用 resolve 函数
-            },
-            error(err) {
-              ctx.logger('mc-server-status').error(`出现错误(服务器不在线?): ${err}`)
-              return session.text(`出现错误(服务器不在线?), 请检查日志`)
-            },
-            complete() {
-              ctx.logger('mc-server-status').info(`成功查询 ${server} 的信息`)
-            }
-          })
-      })
-      result = `<p>${data.host}:${data.port}</p><p>版本: ${data.version.name}</p>`
+      let port = null
+      // check if <server> contains port
+      if (server.includes(':')) {
+        port = server.split(':')[1]
+        server = server.split(':')[0]
+      } else {
+        port = 25565
+      }
+      await pinger.pingPromise(server, port)
+        .then((output) => {
+          data = output
+        })
+        .catch(console.error)
+      ctx.logger('mc-server-status').info(data)
+      result = `<p>${server}:${port}</p><p>版本: ${data.version.name} - ${data.version.protocol}</p>`
       if (config.motd) {
+        let motdr = data.description
+        ctx.logger('mc-server-status').info(`MOTDR: ${motdr}`)
+        motdr = motdr.replace(/\n/g, '<br>')
+        ctx.logger('mc-server-status').info(`MOTDRN: ${motdr}`)
         result += `<p>${motdParser.textToHTML(data.description)}</p>`
       }
       result += `<p>在线人数: ${data.players.online}/${data.players.max}</p>`

@@ -25,7 +25,7 @@
     "koishi": "^4.13.6",
     "koishi-plugin-puppeteer": "^3.5.0",
     "@sfirew/minecraft-motd-parser": "^1.1.2-1",
-    "node-minecraft-status": "^1.2.0"
+    "minecraft-pinger": "^1.0.5"
   },
   "dependencies": {
   }
