@@ -3,6 +3,8 @@ import { } from 'koishi-plugin-puppeteer'
 
 export const name = 'mc-server-status'
 
+export const inject = ['puppeteer']
+
 export interface Config {
   IP: string
   icon: boolean
