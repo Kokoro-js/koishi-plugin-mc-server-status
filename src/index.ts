@@ -20,7 +20,7 @@ export const Config: Schema<Config> = Schema.object({
 })
 
 export const usage = `
-<h2>因为接口原因，宿迁地区服务器因为单方面原因屏蔽了海外ip因此无法使用此插件查询</h2>
+<h2><u>因为接口原因，宿迁地区服务器因为单方面原因屏蔽了海外ip因此无法使用此插件查询</u></h2>
 `
 
 export function apply(ctx: Context, config: Config) {
