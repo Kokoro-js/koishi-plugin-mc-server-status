@@ -19,11 +19,15 @@ export const Config: Schema<Config> = Schema.object({
   motd: Schema.boolean().default(true).description('是否显示服务器MOTD'),
 })
 
+export const usage = `
+<h2>因为接口原因，宿迁地区服务器因为单方面原因屏蔽了海外ip因此无法使用此插件查询</h2>
+`
+
 export function apply(ctx: Context, config: Config) {
   let result = null
   let data = null
   let port = null
-  ctx.command('mcs [server]', { authority: config.authority })
+  ctx.command('mcs [server]', '查询Minecraft服务器状态', { authority: config.authority })
     .action(async ({ session }, server) => {
       if (!server) {
         server = config.IP

@@ -1,7 +1,7 @@
 {
   "name": "koishi-plugin-mc-server-status",
   "description": "A plugin helps you check a minecraft server's status(Minecraft Java Edition)",
-  "version": "2.0.0",
+  "version": "2.0.2",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "files": [
@@ -9,7 +9,6 @@
     "dist"
   ],
   "license": "MIT",
-  "scripts": {},
   "keywords": [
     "minecraft",
     "koishi",
@@ -22,11 +21,8 @@
     "url": "git+https://github.com/itzdrli/koishi-plugin-mc-server-status.git"
   },
   "peerDependencies": {
-    "koishi": "^4.13.6",
-    "koishi-plugin-puppeteer": "^3.5.0",
     "@sfirew/minecraft-motd-parser": "^1.1.2-1",
-    "minecraft-pinger": "^1.0.5"
-  },
-  "dependencies": {
+    "koishi": "^4.13.6",
+    "koishi-plugin-puppeteer": "^3.5.0"
   }
 }
