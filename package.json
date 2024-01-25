@@ -9,7 +9,6 @@
     "dist"
   ],
   "license": "MIT",
-  "scripts": {},
   "keywords": [
     "minecraft",
     "koishi",
@@ -22,11 +21,8 @@
     "url": "git+https://github.com/itzdrli/koishi-plugin-mc-server-status.git"
   },
   "peerDependencies": {
-    "koishi": "^4.13.6",
-    "koishi-plugin-puppeteer": "^3.5.0",
     "@sfirew/minecraft-motd-parser": "^1.1.2-1",
-    "minecraft-pinger": "^1.0.5"
-  },
-  "dependencies": {
+    "koishi": "^4.13.6",
+    "koishi-plugin-puppeteer": "^3.5.0"
   }
 }
