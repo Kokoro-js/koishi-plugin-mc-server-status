@@ -1,0 +1,27 @@
+language: node_js
+node_js:
+  - "20"
+
+os: linux
+dist: jammy
+
+cache:
+  directories:
+    - ~/.npm
+    - ~/.cache
+
+jobs:
+  include:
+    - stage: install-build-publish
+      name: Install And Build And Publish
+      script:
+        - npm install -g yarn
+        - yarn install
+        - yarn tsc -b
+      before_deploy:
+        - npm install -g npm@9
+      deploy:
+        provider: npm
+        email: "liletian1231@gmail.com"
+        api_token: $npmToken
+        skip_cleanup: true
