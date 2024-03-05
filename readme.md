@@ -10,8 +10,8 @@
 
 🔨: Doing ✅: Finished ❌: Not yet 😡: NEVER
 
-  - [🔨] 重写
-  - [😡] 去你的基岩版，不做辣
+  - [✅] 代码重构
+  - [🔨] 基岩版支持
   - [❌] 分群开关，分群绑定ip etc..
 
 # Known issues
