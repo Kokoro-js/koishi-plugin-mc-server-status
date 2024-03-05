@@ -1,6 +1,7 @@
 import { Context } from "koishi";
 import { Config } from '../index';
 import { } from 'koishi-plugin-puppeteer'
+import { skip } from "node:test";
 
 export function generateHtml(result: string, cicon: boolean, server: string): string {
     return `
@@ -26,22 +27,41 @@ export function generateHtml(result: string, cicon: boolean, server: string): st
 
 export function mcs(ctx: Context, config: Config) {
   let result = ''
-  let data = null
-  let port = null
   ctx.command('mcs [server]', '查询Minecraft服务器状态', { authority: config.authority })
     .action(async ({ session }, server) => {
       if (!server) {
         server = config.IP
       }
-      data = await ctx.http.get(`https://sr-api.sfirew.com/server/${server}`)
-      port = String(data.port)
-      result = `<p>${server}</p><p>版本: ${data.version.raw} - ${data.version.protocol}</p>`
-      if (config.motd) {
-        result += `<p>${data.motd.html}</p>`
+
+      const data = await ctx.http.get(`https://sr-api.sfirew.com/server/${server}`);
+
+      let result = `<p>${server}</p>`;
+
+      if (!config.bedrockSupport) {
+        result += `<p>版本: ${data.version?.raw} - ${data.version?.protocol}</p>`;
+        if (config.motd && data.motd) {
+            result += `<p>${data.motd.html}</p>`;
+        }
+        result += `<p>在线人数: ${data.players?.online}/${data.players?.max}</p>`;
+      } else {
+        if (!data.players?.sample) {
+          result = `<p>基岩版</br> ${server}</p>`;
+          if (data.version) {
+            result += `<p>版本: ${data.version.raw} - ${data.version.protocol}</p>`;
+          }
+        } else {
+          result += `<p>版本: ${data.version?.raw} - ${data.version?.protocol}</p>`;
+        }
+        if (config.motd && data.motd) {
+          result += `<p>${data.motd.html}</p>`;
+        }
+        if (data.players) {
+          result += `<p>在线人数: ${data.players.online}/${data.players.max}</p>`;
+        }
       }
-      result += `<p>在线人数: ${data.players.online}/${data.players.max}</p>`
-      const html = generateHtml(result, config.icon, server)
-      const image = await ctx.puppeteer.render(html)
-      return image
+
+    const html = generateHtml(result, config.icon, server);
+    const image = await ctx.puppeteer.render(html);
+    return image;
     })
 }
