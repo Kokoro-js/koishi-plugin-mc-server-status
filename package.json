@@ -1,7 +1,7 @@
 {
   "name": "koishi-plugin-mc-server-status",
   "description": "Minecraft服务器状态查询",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "files": [
