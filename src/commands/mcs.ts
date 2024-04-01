@@ -19,6 +19,8 @@ export function generateHtml(result: string, cicon: boolean, server: string): st
             <div class="bg-gray-800 rounded-lg shadow-lg p-8">
                 <div class="text-center">${cicon ? `<img src="https://sr-api.sfirew.com/server/${server}/icon.png" alt="icon" class="w-35 h-35 mx-auto" />` : ''}</div>
                 <div class="text-center mt-4"><div class="text-lg font-bold text-white">${result}</div></div>
+                </br>
+                <div class="text-center mt-4"><div class="text-sm text-gray-400">Powered by koishi-plugin-mc-server-manager v.2.2.3</br>广告位招租 @itzdrli</div></div>
             </div>
         </div>
     </body>
