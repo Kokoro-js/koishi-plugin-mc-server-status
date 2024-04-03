@@ -28,7 +28,7 @@ export function generateHtml(result: string, cicon: boolean, server: string): st
     </div>
   </div>
   <footer class="bg-gray-800 text-center py-2">
-    <p class="text-sm text-gray-400">Powered by koishi-plugin-mc-server-manager v.2.2.3</br>广告位招租 @itzdrli</p>
+    <p class="text-sm text-gray-400">Powered by koishi-plugin-mc-server-manager v.2.2.5</br>广告位招租 @itzdrli</p>
   </footer>
   </div>
 </body>
