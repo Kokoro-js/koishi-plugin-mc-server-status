@@ -40,7 +40,13 @@ export function mcs(ctx: Context, config: Config) {
   ctx.command('mcs [server]', '查询Minecraft服务器状态', { authority: config.authority })
     .action(async ({ session }, server) => {
       if (!server) {
-        server = config.IP
+        const res = await ctx.database.get('mc_server_status', session.guildId)
+        if (res.length) {
+          if (res[0].id === session.guildId) server = res[0].server_ip
+          else server = config.IP
+        } else {
+          server = config.IP
+        }
       }
 
       const data = await ctx.http.get(`https://sr-api.sfirew.com/server/${server}`);
@@ -54,7 +60,7 @@ export function mcs(ctx: Context, config: Config) {
         }
         result += `<p>在线人数: ${data.players?.online}/${data.players?.max}</p>`;
       } else {
-        if (!data.players?.sample) {
+        if (data.version.name === data.version.raw) {
           result = `<p>基岩版</br> ${server}</p>`;
           if (data.version) {
             result += `<p>版本: ${data.version.raw} - ${data.version.protocol}</p>`;
