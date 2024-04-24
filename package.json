@@ -1,7 +1,7 @@
 {
   "name": "koishi-plugin-mc-server-status",
-  "description": "Minecraft服务器状态查询",
-  "version": "2.3.2",
+  "description": "Minecraft服务器状态查询, 支持Minecraft:JE 1.8+服务器查询",
+  "version": "3.0.0",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "files": [
@@ -21,10 +21,12 @@
     "url": "git+https://github.com/Kokoro-js/koishi-plugin-mc-server-status.git"
   },
   "peerDependencies": {
+    "@ahdg/minecraftstatuspinger": "^1.1.5",
     "koishi": "^4.13.6",
     "koishi-plugin-puppeteer": "^3.8.4"
   },
   "devDependencies": {
+    "@ahdg/minecraftstatuspinger": "^1.1.5",
     "koishi": "^4.13.6",
     "koishi-plugin-puppeteer": "^3.8.4",
     "typescript": "^5.5.0-dev.20240416",
