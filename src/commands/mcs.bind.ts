@@ -3,6 +3,7 @@ import { Config } from '../index';
 
 export function bind(ctx: Context, config: Config) {
     ctx.command('mcsBind <server:string> [guildId]', '绑定Minecraft服务器', { authority: 4 })
+        
         .action(async ({ session }, server, guildId) => {
             if (!session.guildId) return `请在群内使用此命令`
             if (!guildId) {
@@ -10,7 +11,15 @@ export function bind(ctx: Context, config: Config) {
             }
             const res = await ctx.database.get('mc_server_status', guildId)
             if (res.length) {
-                return `群 ${guildId} 已绑定服务器 ${res[0].server_ip}`
+                session.send(`群 ${guildId} 已绑定服务器 ${res[0].server_ip}, 回复 okay 以进行替换，或者回复 cancel 取消替换`)
+                const response = await session.prompt()
+                if (response === 'cancel') {
+                    return `已取消替换服务器`
+                } else if (response === 'okay') {
+                    await ctx.database.remove('mc_server_status', guildId)
+                } else {
+                    return `无效回复, 已取消操作`
+                }
             }
             await ctx.database.create('mc_server_status', {
                 id: guildId,

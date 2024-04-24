@@ -1,12 +1,21 @@
 import { Context } from "koishi";
 import { Config } from '../index';
+import mc from "@ahdg/minecraftstatuspinger";
+import { autoToHTML as motdParser } from '@sfirew/minecraft-motd-parser'
 import { } from 'koishi-plugin-puppeteer'
+import { motdJsonType } from "@sfirew/minecraft-motd-parser/types/types";
 
-export function generateHtml(result: string, cicon: boolean, server: string, footer: string): string {
+interface Status {
+  description: motdJsonType;
+  players: { max: number; online: number };
+  version: { name: string; protocol: number };
+  favicon: string;
+}
+
+function generateHtml(result: string, cicon: boolean, server: string, footer: string, icon64: string): string {
   return `
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=auto, initial-scale=1.0">
@@ -18,11 +27,9 @@ export function generateHtml(result: string, cicon: boolean, server: string, foo
     }
   </style>
 </head>
-
 <body style="width: 650px">
   <div class="container mx-auto py-8">
-    <div class="text-center">${cicon ? `<img src="https://sr-api.sfirew.com/server/${server}/icon.png" alt="icon"
-        class="w-50px h-50px mx-auto" />` : ''}</div>
+    ${cicon ? `<div class="text-center"><img src=${icon64} alt="icon" class="w-70px h-70px mx-auto" /></div>` : ''}
     <div class="text-center mt-4">
       <div class="text-lg font-bold text-white">${result}</div>
     </div>
@@ -30,55 +37,45 @@ export function generateHtml(result: string, cicon: boolean, server: string, foo
   <footer class="bg-gray-800 text-center py-2">
     <p class="text-sm text-gray-400">${footer}</p>
   </footer>
-  </div>
 </body>
-
-</html>`
+</html>`;
 }
 
-export function mcs(ctx: Context, config: Config) {
+export async function mcs(ctx: Context, config: Config) {
   ctx.command('mcs [server]', '查询Minecraft服务器状态', { authority: config.authority })
     .action(async ({ session }, server) => {
-      if (!server) {
-        const res = await ctx.database.get('mc_server_status', session.guildId)
-        if (res.length) {
-          if (res[0].id === session.guildId) server = res[0].server_ip
-          else server = config.IP
-        } else {
-          server = config.IP
-        }
+      server = server || (await ctx.database.get('mc_server_status', session.guildId))[0]?.server_ip || config.IP;
+      let mcPort = 25565
+      if (server.includes(":")) {
+        let [host, port] = server.split(":");
+        server = host;
+        mcPort = parseInt(port)
+      }
+      let mcdata
+      try {
+        mc.setDnsServers([config.dnsServer])
+        mcdata = await mc.lookup({
+          host: server,
+          port: mcPort,
+          disableSRV: config.skipSRV,
+        })
+      } catch (e) {
+        return `出现错误: ${e.message}`
       }
 
-      const data = await ctx.http.get(`https://sr-api.sfirew.com/server/${server}`);
-
-      let result = `<p>${server}</p>`;
-
-      if (!config.bedrockSupport) {
-        result += `<p>版本: ${data.version?.raw} - ${data.version?.protocol}</p>`;
-        if (config.motd && data.motd) {
-          result += `<p>${data.motd.html}</p>`;
-        }
-        result += `<p>在线人数: ${data.players?.online}/${data.players?.max}</p>`;
-      } else {
-        if (data.version.name === data.version.raw) {
-          result = `<p>基岩版</br> ${server}</p>`;
-          if (data.version) {
-            result += `<p>版本: ${data.version.raw} - ${data.version.protocol}</p>`;
-          }
-        } else {
-          result += `<p>版本: ${data.version?.raw} - ${data.version?.protocol}</p>`;
-        }
-        if (config.motd && data.motd) {
-          result += `<p>${data.motd.html}</p>`;
-        }
-        if (data.players) {
-          result += `<p>在线人数: ${data.players.online}/${data.players.max}</p>`;
-        }
+      const status: Status = mcdata.status as any;
+      let result = `<p>${server} - 延迟 ${mcdata.latency}ms</p>`;
+      result += `<p>版本: ${status.version.name} - ${status.version.protocol}</p>`;
+      if (config.motd) {
+        const motd = motdParser(status.description)
+        result += `<p>${motd}</p>`;
       }
+      result += `<p>在线人数: ${status.players.online}/${status.players.max}</p>`;
 
-      const footer = config.footer.replace(/\n/g, '<br>')
-      const html = generateHtml(result, config.icon, server, footer);
+      const icon = status.favicon
+      const footer = config.footer.replace(/\n/g, '</br>');
+      const html = generateHtml(result, config.icon, server, footer, icon);
       const image = await ctx.puppeteer.render(html);
       return image;
-    })
+    });
 }
