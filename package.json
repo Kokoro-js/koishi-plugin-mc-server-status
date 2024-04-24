@@ -1,7 +1,7 @@
 {
   "name": "koishi-plugin-mc-server-status",
   "description": "Minecraft服务器状态查询, 支持Minecraft:JE 1.8+服务器查询",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "files": [
@@ -23,13 +23,15 @@
   "peerDependencies": {
     "@ahdg/minecraftstatuspinger": "^1.1.5",
     "koishi": "^4.13.6",
-    "koishi-plugin-puppeteer": "^3.8.4"
+    "koishi-plugin-puppeteer": "^3.8.4",
+    "@sfirew/minecraft-motd-parser": "^1.1.2-1"
   },
   "devDependencies": {
     "@ahdg/minecraftstatuspinger": "^1.1.5",
     "koishi": "^4.13.6",
     "koishi-plugin-puppeteer": "^3.8.4",
     "typescript": "^5.5.0-dev.20240416",
+    "@sfirew/minecraft-motd-parser": "^1.1.2-1",
     "yml-register": "^1.2.5"
   }
 }
