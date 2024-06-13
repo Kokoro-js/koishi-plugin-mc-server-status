@@ -17,7 +17,7 @@ jobs:
       script:
         - npm install -g yarn
         - yarn install
-        - yarn tsc -b
+        - yarn build
       before_deploy:
         - npm install -g npm@9
       deploy:

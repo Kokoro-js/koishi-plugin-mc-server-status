@@ -4,6 +4,7 @@ import mc from "@ahdg/minecraftstatuspinger";
 import { autoToHTML as motdParser } from '@sfirew/minecraft-motd-parser'
 import { } from 'koishi-plugin-puppeteer'
 import { motdJsonType } from "@sfirew/minecraft-motd-parser/types/types";
+import Umami from "../umami";
 
 interface Status {
   description: motdJsonType;
@@ -44,6 +45,16 @@ function generateHtml(result: string, cicon: boolean, server: string, footer: st
 export async function mcs(ctx: Context, config: Config) {
   ctx.command('mcs [server]', '查询Minecraft服务器状态', { authority: config.authority })
     .action(async ({ session }, server) => {
+      if (config.data_collet) {
+        Umami.send({
+          ctx,
+          url: '/mcs',
+          urlSearchParams: {
+            args: session.argv.args?.join(', '),
+            ...(session.argv.options || {}),
+          }
+        });
+      }
       server = server || (await ctx.database.get('mc_server_status', session.guildId))[0]?.server_ip || config.IP;
       let mcPort = 25565
       if (server.includes(":")) {
@@ -51,7 +62,7 @@ export async function mcs(ctx: Context, config: Config) {
         server = host;
         mcPort = parseInt(port)
       }
-      let mcdata
+      let mcdata: any
       try {
         mc.setDnsServers([config.dnsServer])
         mcdata = await mc.lookup({

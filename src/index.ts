@@ -10,6 +10,7 @@ export const inject = [
 ]
 
 export interface Config {
+  data_collet: boolean,
   IP: string
   icon: boolean
   motd: boolean
@@ -21,6 +22,10 @@ export interface Config {
 }
 
 export const Config: Schema<Config> = Schema.object({
+  data_collet: Schema
+    .boolean()
+    .default(true)
+    .description('是否允许匿名数据收集'),
   authority: Schema
     .number()
     .default(0)
