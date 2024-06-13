@@ -31,6 +31,8 @@
   },
   "devDependencies": {
     "koishi": "^4.17.8",
+    "@ahdg/minecraftstatuspinger": "^1.1.5",
+    "@sfirew/minecraft-motd-parser": "^1.1.2",
     "koishi-plugin-puppeteer": "^3.8.4",
     "yakumo": "^1.0.0-beta.16",
     "yakumo-esbuild": "^1.0.0-beta.6",
