@@ -45,7 +45,7 @@ function generateHtml(result: string, cicon: boolean, server: string, footer: st
 export async function mcs(ctx: Context, config: Config) {
   ctx.command('mcs [server]', '查询Minecraft服务器状态', { authority: config.authority })
     .action(async ({ session }, server) => {
-      if (config.data_collet) {
+      if (config.data_collect) {
         Umami.send({
           ctx,
           url: '/mcs',

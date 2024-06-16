@@ -6,7 +6,7 @@ export function bind(ctx: Context, config: Config) {
     ctx.command('mcsBind <server:string> [guildId]', '绑定Minecraft服务器', { authority: 4 })
         
         .action(async ({ session }, server, guildId) => {
-            if (config.data_collet) {
+            if (config.data_collect) {
                 Umami.send({
                   ctx,
                   url: '/mcsBind',
