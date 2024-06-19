@@ -25,7 +25,7 @@ export const Config: Schema<Config> = Schema.object({
   data_collect: Schema
     .boolean()
     .default(true)
-    .description('是否允许匿名数据收集 [隐私政策](https://github.com/itzdrli/privacy_policy/blob/main/readme.md)'),
+    .description('是否允许匿名数据收集 隐私政策见上方链接'),
   authority: Schema
     .number()
     .default(0)
@@ -58,6 +58,7 @@ export const Config: Schema<Config> = Schema.object({
 export const usage = `
 <h2>如遇使用问题可以前往QQ群: 957500313 讨论<h2>
 <h2>基岩版支持已被放弃</h2>
+<h2> 匿名数据收集 👉 <a href="https://legal.itzdrli.com">隐私政策</a> </h2>
 <p>请我喝杯咖啡 👇</br><a href="https://ko-fi.com/itzdrli"><img src="https://img.shields.io/badge/Ko--fi-F16061?style=for-the-badge&logo=ko-fi&logoColor=white" alt="ko-fi"></a></p> <a href="https://afdian.net/a/itzdrli">
   <button>爱发电</button>
 </a>
