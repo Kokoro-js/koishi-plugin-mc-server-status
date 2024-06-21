@@ -1,10 +1,21 @@
 import { Context } from "koishi";
 import { Config } from '../index';
+import Umami from "../umami";
 
 export function bind(ctx: Context, config: Config) {
     ctx.command('mcsBind <server:string> [guildId]', '绑定Minecraft服务器', { authority: 4 })
         
         .action(async ({ session }, server, guildId) => {
+            if (config.data_collect) {
+                Umami.send({
+                  ctx,
+                  url: '/mcsBind',
+                  urlSearchParams: {
+                    args: session.argv.args?.join(', '),
+                    ...(session.argv.options || {}),
+                  }
+                });
+              }
             if (!session.guildId) return `请在群内使用此命令`
             if (!guildId) {
                 guildId = session.guildId
