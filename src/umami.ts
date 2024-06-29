@@ -3,7 +3,7 @@ import { Context, version } from "koishi";
 import packageJson from "../package.json";
 
 const dataHostUrl: string = 'https://data.itzdrli.com';
-const website: string = "29272bd1-0f4c-4db8-ad22-bec20ee15810";
+const website: string = "0782d0fd-816c-4277-bf12-c19fa2b8b75c";
 
 interface Payload {
   website: string;
