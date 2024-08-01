@@ -26,6 +26,9 @@ export const Config: Schema<Config> = Schema.object({
     .boolean()
     .default(true)
     .description('是否允许匿名数据收集 隐私政策见上方链接'),
+  IP: Schema.string()
+    .required(true)
+    .description('默认服务器IP'),
   authority: Schema
     .number()
     .default(0)
@@ -36,9 +39,6 @@ export const Config: Schema<Config> = Schema.object({
   skipSRV: Schema.boolean()
     .description('是否跳过SRV记录')
     .default(false),
-  IP: Schema.string()
-    .required(true)
-    .description('默认服务器IP'),
   icon: Schema.boolean()
     .default(true)
     .description('是否显示服务器图标'),
@@ -66,9 +66,9 @@ export const usage = `
     display: inline-block;
     border-radius: 20px;
     padding: 5px;
-    background: yellow;
+    background: purple;
     color: #000000;
-" href="https://www.chongya.com/@itzdrli">冲呀</a>
+" href="https://afdian.com/a/itzdrli">爱发电</a>
 </a>
 `
 
