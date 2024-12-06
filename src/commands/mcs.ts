@@ -4,7 +4,8 @@ import mc from "@ahdg/minecraftstatuspinger";
 import { autoToHTML as motdParser } from '@sfirew/minecraft-motd-parser'
 import { } from 'koishi-plugin-puppeteer'
 import { motdJsonType } from "@sfirew/minecraft-motd-parser/types/types";
-import Umami from "../umami";
+import { umami } from "../index";
+import { } from 'koishi-plugin-umami-statistics-service'
 
 interface Status {
   description: motdJsonType;
@@ -23,8 +24,8 @@ function generateHtml(result: string, cicon: boolean, server: string, footer: st
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     body {
-      background-color: #1a202c;
-      color: #fff;
+      background-color: #354E43;
+      color: #F6FFF8;
     }
   </style>
 </head>
@@ -35,8 +36,8 @@ function generateHtml(result: string, cicon: boolean, server: string, footer: st
       <div class="text-lg font-bold text-white">${result}</div>
     </div>
   </div>
-  <footer class="bg-gray-800 text-center py-2">
-    <p class="text-sm text-gray-400">${footer}</p>
+  <footer class="bg-[#42584F] text-center py-2">
+    <p class="text-sm text-[#A4C3B2]">${footer}</p>
   </footer>
 </body>
 </html>`;
@@ -46,14 +47,15 @@ export async function mcs(ctx: Context, config: Config) {
   ctx.command('mcs [server]', '查询Minecraft服务器状态', { authority: config.authority })
     .action(async ({ session }, server) => {
       if (config.data_collect) {
-        Umami.send({
-          ctx,
+        ctx.umamiStatisticsService.send({
+          dataHostUrl: umami[1],
+          website: umami[0],
           url: '/mcs',
           urlSearchParams: {
             args: session.argv.args?.join(', '),
             ...(session.argv.options || {}),
-          }
-        });
+          },
+        })
       }
       server = server || (await ctx.database.get('mc_server_status', session.guildId))[0]?.server_ip || config.IP;
       let mcPort = 25565
