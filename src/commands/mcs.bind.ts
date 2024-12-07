@@ -1,20 +1,22 @@
 import { Context } from "koishi";
 import { Config } from '../index';
-import Umami from "../umami";
+import { } from 'koishi-plugin-umami-statistics-service'
+import { umami } from "../index";
 
 export function bind(ctx: Context, config: Config) {
     ctx.command('mcsBind <server:string> [guildId]', '绑定Minecraft服务器', { authority: 4 })
         
         .action(async ({ session }, server, guildId) => {
             if (config.data_collect) {
-                Umami.send({
-                  ctx,
+                ctx.umamiStatisticsService.send({
+                  dataHostUrl: umami[1],
+                  website: umami[0],
                   url: '/mcsBind',
                   urlSearchParams: {
                     args: session.argv.args?.join(', '),
                     ...(session.argv.options || {}),
-                  }
-                });
+                  },
+                })
               }
             if (!session.guildId) return `请在群内使用此命令`
             if (!guildId) {
