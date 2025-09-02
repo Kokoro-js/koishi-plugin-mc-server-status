@@ -15,7 +15,7 @@
     "plugin",
     "mc"
   ],
-  "author": "Itz_Dr_Li",
+  "author": "itzdrli",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Kokoro-js/koishi-plugin-mc-server-status.git"
@@ -39,9 +39,9 @@
     "koishi-plugin-umami-statistics-service": "^0.0.7",
     "tsc": "^2.0.4",
     "typescript": "^5.7.0-dev.20241101",
-    "yakumo": "^1.0.0-beta.18",
-    "yakumo-esbuild": "^1.0.0-beta.7",
-    "yakumo-tsc": "1.0.0-beta.4",
+    "yakumo": "^1.0.0",
+    "yakumo-esbuild": "^1.0.0",
+    "yakumo-tsc": "^1.0.0",
     "yml-register": "^1.2.5"
   },
   "dependencies": {

@@ -45,9 +45,9 @@ jobs:
         run: yarn build
         
       - name: Publish to NPM
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         run: |
-          npm install -g npm@10
+          npm install -g npm@11
           npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
