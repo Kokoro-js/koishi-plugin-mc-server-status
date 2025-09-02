@@ -14,7 +14,9 @@ interface Status {
   favicon: string;
 }
 
-function generateHtml(result: string, cicon: boolean, server: string, footer: string, icon64: string): string {
+const dark = ["#2e3440", "#cdd6f4", "#434c5e"];
+
+export async function generateHtml(icon: any, text: string, footer) {
   return `
 <!DOCTYPE html>
 <html lang="en">
@@ -24,27 +26,33 @@ function generateHtml(result: string, cicon: boolean, server: string, footer: st
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     body {
-      background-color: #354E43;
-      color: #F6FFF8;
+      background-color: ${dark[0]};
+      color: ${dark[1]};
     }
   </style>
 </head>
 <body style="width: 650px">
-  <div class="container mx-auto py-8">
-    ${cicon ? `<div class="text-center"><img src=${icon64} alt="icon" class="w-70px h-70px mx-auto" /></div>` : ''}
-    <div class="text-center mt-4">
-      <div class="text-lg font-bold text-white">${result}</div>
+  <div class="container mx-auto pl-20 pr-8 py-4">
+    <div class="px-6 flex items-center gap-10">
+      ${
+        icon
+          ? `<div class="flex-shrink-0"><img src=${icon} alt="icon" class="w-auto h-auto rounded-lg" /></div>`
+          : ""
+      }
+      <div class="flex-grow pl-25">
+        <div class="text-lg font-bold text-[${dark[1]}]">${text}</div>
+      </div>
     </div>
   </div>
-  <footer class="bg-[#42584F] text-center py-2">
-    <p class="text-sm text-[#A4C3B2]">${footer}</p>
+  <footer class="bg-[${dark[2]}] text-center py-2">
+    <p class="text-sm text-[${dark[1]}]">${footer}</p>
   </footer>
 </body>
 </html>`;
 }
 
 export async function mcs(ctx: Context, config: Config) {
-  ctx.command('mcs [server]', '查询Minecraft服务器状态', { authority: config.authority })
+  ctx.command('mcs [server]', '查询 Minecraft 服务器状态', { authority: config.authority })
     .action(async ({ session }, server) => {
       if (config.data_collect) {
         ctx.umamiStatisticsService.send({
@@ -87,7 +95,7 @@ export async function mcs(ctx: Context, config: Config) {
 
       const icon = status.favicon
       const footer = config.footer.replace(/\n/g, '</br>');
-      const html = generateHtml(result, config.icon, server, footer, icon);
+      const html = await generateHtml(icon, result, footer);
       const image = await ctx.puppeteer.render(html);
       return image;
     });
