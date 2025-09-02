@@ -6,6 +6,7 @@ import { } from 'koishi-plugin-puppeteer'
 import { motdJsonType } from "@sfirew/minecraft-motd-parser/types/types";
 import { umami } from "../index";
 import { } from 'koishi-plugin-umami-statistics-service'
+import * as punycode from 'punycode';
 
 interface Status {
   description: motdJsonType;
@@ -31,7 +32,7 @@ export async function generateHtml(icon: any, text: string, footer) {
     }
   </style>
 </head>
-<body style="width: 650px">
+<body style="width: 750px">
   <div class="container mx-auto pl-20 pr-8 py-4">
     <div class="px-6 flex items-center gap-10">
       ${
@@ -51,6 +52,19 @@ export async function generateHtml(icon: any, text: string, footer) {
 </html>`;
 }
 
+function convertToPunycode(hostname: string): string {
+  try {
+    // Check if hostname contains non-ASCII characters
+    if (!/^[\x00-\x7F]*$/.test(hostname)) {
+      return punycode.toASCII(hostname);
+    }
+    return hostname;
+  } catch {
+    // If conversion fails, return original hostname
+    return hostname;
+  }
+}
+
 export async function mcs(ctx: Context, config: Config) {
   ctx.command('mcs [server]', '查询 Minecraft 服务器状态', { authority: config.authority })
     .action(async ({ session }, server) => {
@@ -65,12 +79,15 @@ export async function mcs(ctx: Context, config: Config) {
           },
         })
       }
+      const originalServer = server
       server = server || (await ctx.database.get('mc_server_status', session.guildId))[0]?.server_ip || config.IP;
       let mcPort = 25565
       if (server.includes(":")) {
         let [host, port] = server.split(":");
-        server = host;
+        server = convertToPunycode(host);
         mcPort = parseInt(port)
+      } else {
+        server = convertToPunycode(server);
       }
       let mcdata: any
       try {
@@ -85,7 +102,7 @@ export async function mcs(ctx: Context, config: Config) {
       }
 
       const status: Status = mcdata.status as any;
-      let result = `<p>${server} - 延迟 ${mcdata.latency}ms</p>`;
+      let result = `<p>${originalServer} - 延迟 ${mcdata.latency}ms</p>`;
       result += `<p>版本: ${status.version.name} - ${status.version.protocol}</p>`;
       if (config.motd) {
         const motd = motdParser(status.description)

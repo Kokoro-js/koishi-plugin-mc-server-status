@@ -1,6 +1,6 @@
 # mc-server-status
 
-[![Github](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/kokoro-js/koishi-plugin-mc-server-status) [![npm](https://img.shields.io/npm/v/koishi-plugin-mc-server-status?style=flat-square)](https://www.npmjs.com/package/koishi-plugin-mc-server-status) [![Build Status](https://app.travis-ci.com/itzdrli/koishi-plugin-mc-server-status.svg?branch=master)](https://app.travis-ci.com/itzdrli/koishi-plugin-mc-server-status)
+[![Github](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/kokoro-js/koishi-plugin-mc-server-status) [![npm](https://img.shields.io/npm/v/koishi-plugin-mc-server-status?style=flat-square)](https://www.npmjs.com/package/koishi-plugin-mc-server-status) [![Build Status](https://github.com/Kokoro-js/koishi-plugin-mc-server-status/actions/workflows/build.yml/badge.svg)](https://github.com/Kokoro-js/koishi-plugin-mc-server-status/actions)
 
 一个适用于 [Koishi](https://koishi.chat/) 的 Minecraft 服务器状态查询插件, 支持查询Minecraft:JE 1.8+版本的服务器
 
@@ -13,7 +13,3 @@
 
 - `mcs [ip]` 查询Minecraft服务器状态，空则为默认IP或者群绑定IP
 - `mcsBind <ip> [群号]` 绑定群内默认Minecraft服务器IP
-
-## Known issues
-
-  - 开发者太菜，代码写的太烂 (爱来自Github Copilot)
