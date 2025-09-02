@@ -6,7 +6,7 @@ import { } from 'koishi-plugin-puppeteer'
 import { motdJsonType } from "@sfirew/minecraft-motd-parser/types/types";
 import { umami } from "../index";
 import { } from 'koishi-plugin-umami-statistics-service'
-import * as punycode from 'punycode';
+import url from 'node:url';
 
 interface Status {
   description: motdJsonType;
@@ -56,7 +56,7 @@ function convertToPunycode(hostname: string): string {
   try {
     // Check if hostname contains non-ASCII characters
     if (!/^[\x00-\x7F]*$/.test(hostname)) {
-      return punycode.toASCII(hostname);
+      return url.domainToASCII(hostname)
     }
     return hostname;
   } catch {

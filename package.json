@@ -43,8 +43,5 @@
     "yakumo-esbuild": "^1.0.0",
     "yakumo-tsc": "^1.0.0",
     "yml-register": "^1.2.5"
-  },
-  "dependencies": {
-    "punycode": "^2.3.1"
   }
 }
