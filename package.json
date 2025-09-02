@@ -1,7 +1,7 @@
 {
   "name": "koishi-plugin-mc-server-status",
   "description": "Minecraft服务器状态查询, 支持Minecraft:JE 1.8+服务器查询",
-  "version": "4.1.0",
+  "version": "4.1.1",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "files": [
