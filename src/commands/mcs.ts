@@ -79,8 +79,8 @@ export async function mcs(ctx: Context, config: Config) {
           },
         })
       }
-      const originalServer = server
       server = server || (await ctx.database.get('mc_server_status', session.guildId))[0]?.server_ip || config.IP;
+      const originalServer = server
       let mcPort = 25565
       if (server.includes(":")) {
         let [host, port] = server.split(":");
