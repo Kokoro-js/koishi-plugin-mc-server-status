@@ -6,7 +6,8 @@
   "typings": "lib/index.d.ts",
   "files": [
     "lib",
-    "dist"
+    "dist",
+    "patches"
   ],
   "license": "MIT",
   "keywords": [
@@ -21,7 +22,8 @@
     "url": "git+https://github.com/Kokoro-js/koishi-plugin-mc-server-status.git"
   },
   "scripts": {
-    "build": "yakumo build"
+    "build": "yakumo build",
+    "postinstall": "patch-package"
   },
   "peerDependencies": {
     "@ahdg/minecraftstatuspinger": "^1.1.5",
@@ -37,6 +39,7 @@
     "koishi": "^4.18.0",
     "koishi-plugin-puppeteer": "^3.9.0",
     "koishi-plugin-umami-statistics-service": "^0.0.7",
+    "patch-package": "^8.0.1",
     "tsc": "^2.0.4",
     "typescript": "^5.7.0-dev.20241101",
     "yakumo": "^1.0.0",

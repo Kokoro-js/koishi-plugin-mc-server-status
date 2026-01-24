@@ -1,0 +1,26 @@
+diff --git a/node_modules/@ahdg/minecraftstatuspinger/dist/index.cjs b/node_modules/@ahdg/minecraftstatuspinger/dist/index.cjs
+index 78239f0..d98d7f8 100644
+--- a/node_modules/@ahdg/minecraftstatuspinger/dist/index.cjs
++++ b/node_modules/@ahdg/minecraftstatuspinger/dist/index.cjs
+@@ -141,7 +141,7 @@ async function craftData(packet) {
+   packet.fieldsBuffer = packet.dataBuffer.slice(packet.meta.metaLength);
+   let fieldLength = varint.decode(packet.fieldsBuffer);
+   packet.fieldsBuffer = packet.fieldsBuffer.slice(varint.encodingLength(fieldLength));
+-  packet.crafted.data = packet.fieldsBuffer.toString();
++  packet.crafted.data = packet.fieldsBuffer.slice(0, fieldLength).toString();
+   packet.status.handshakeBaked = true;
+   return packet;
+ }
+diff --git a/node_modules/@ahdg/minecraftstatuspinger/dist/index.mjs b/node_modules/@ahdg/minecraftstatuspinger/dist/index.mjs
+index bb8fdb6..ac53abc 100644
+--- a/node_modules/@ahdg/minecraftstatuspinger/dist/index.mjs
++++ b/node_modules/@ahdg/minecraftstatuspinger/dist/index.mjs
+@@ -120,7 +120,7 @@ async function craftData(packet) {
+   packet.fieldsBuffer = packet.dataBuffer.slice(packet.meta.metaLength);
+   let fieldLength = varint.decode(packet.fieldsBuffer);
+   packet.fieldsBuffer = packet.fieldsBuffer.slice(varint.encodingLength(fieldLength));
+-  packet.crafted.data = packet.fieldsBuffer.toString();
++  packet.crafted.data = packet.fieldsBuffer.slice(0, fieldLength).toString();
+   packet.status.handshakeBaked = true;
+   return packet;
+ }
