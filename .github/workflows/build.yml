@@ -10,11 +10,11 @@ on:
 
 jobs:
   build-and-publish:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest 
     
-    strategy:
-      matrix:
-        node-version: [22.x]
+    permissions:
+      contents: read
+      id-token: write 
         
     steps:
       - uses: actions/checkout@v4
@@ -22,11 +22,11 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: '22'
           registry-url: 'https://registry.npmjs.org'
           
       - name: Cache dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4 
         with:
           path: |
             ~/.npm
@@ -35,11 +35,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
             
-      - name: Install global dependencies
-        run: npm install -g yarn
-        
       - name: Install project dependencies
-        run: yarn install
+        run: |
+          corepack enable
+          yarn install
         
       - name: Build
         run: yarn build
@@ -47,7 +46,4 @@ jobs:
       - name: Publish to NPM
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         run: |
-          npm install -g npm@11
-          npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          npm publish --provenance --access public
