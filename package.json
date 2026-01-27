@@ -23,11 +23,19 @@
   "scripts": {
     "build": "yakumo build"
   },
+  "koishi": {
+    "service": {
+      "required": [
+        "puppeteer",
+        "database",
+        "umamiStatisticsService"
+      ]
+    }
+  },
   "peerDependencies": {
     "@ahdg/minecraftstatuspinger": "^1.1.5",
     "@sfirew/minecraft-motd-parser": "^1.1.3",
-    "koishi": "^4.18.0",
-    "koishi-plugin-puppeteer": "^3.9.0"
+    "koishi": "^4.18.0"
   },
   "devDependencies": {
     "@ahdg/minecraftstatuspinger": "^1.1.5",
